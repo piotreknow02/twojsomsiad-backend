@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"twojsomsiad/config"
 
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -18,12 +18,15 @@ func GetDB() *gorm.DB {
 }
 
 func Setup() error {
-	connstring := config.Conf.DBUser + ":" + config.Conf.DBPassword + "@tcp(" + config.Conf.DBHost + ":3306)/locker?charset=utf8&parseTime=True&loc=Local"
-	fmt.Println(connstring)
-	db, err := gorm.Open(
-		mysql.Open(connstring),
-		&gorm.Config{},
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Europe/Warsaw",
+		config.Conf.DBHost,
+		config.Conf.DBUser,
+		config.Conf.DBPassword,
+		"twojsomsiad",
+		"5432",
 	)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		DbErr = err

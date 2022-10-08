@@ -9,20 +9,19 @@ services:
     env_file:
       - .env
     networks:
-      - locker
+      - twojsomsiad
 
   database:
-    image: mariadb
+    image: postgres:latest
     restart: unless-stopped
     environment:
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_DATABASE: locker
-      MARIADB_RANDOM_ROOT_PASSWORD: true
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: twojsomsiad
     ports:
-      - 3306:3306
+      - 5432:5432
     networks:
-      - locker
+      - twojsomsiad
 
 networks:
-  locker:
+  twojsomsiad:
