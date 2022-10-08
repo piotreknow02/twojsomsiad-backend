@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  server:
+    image: twojsomsiad
+    restart: unless-stopped
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    networks:
+      - locker
+
+  database:
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: locker
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+    ports:
+      - 3306:3306
+    networks:
+      - locker
+
+networks:
+  locker:

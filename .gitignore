@@ -13,3 +13,13 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Environment variabled
+.env
+!.env.example
+
+# Swagger generated files
+docs/
+
+# Postman collection
+collection.json
