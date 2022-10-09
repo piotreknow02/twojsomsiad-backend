@@ -14,8 +14,8 @@ func Auth(api *controller.Controller) *jwt.GinJWTMiddleware {
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:           "twojsasiad",
 		Key:             []byte(config.Conf.JwtSecret),
-		Timeout:         time.Hour,
-		MaxRefresh:      time.Hour,
+		Timeout:         time.Hour * time.Duration(config.Conf.JwtAccessExpireTime),
+		MaxRefresh:      time.Hour * time.Duration(config.Conf.JwtRefreshExpireTime),
 		IdentityKey:     "id",
 		PayloadFunc:     PayloadFunc,
 		IdentityHandler: api.IndentifyHandler,
