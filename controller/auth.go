@@ -20,7 +20,6 @@ import (
 // @Param Login body model.AuthLoginDTO true "Login"
 // @Success 200 "Success"
 // @Router /auth/login [post]
-
 func (base *Controller) IndentifyHandler(c *gin.Context) interface{} {
 	claims := jwt.ExtractClaims(c)
 	return &model.UserClaims{
@@ -28,6 +27,15 @@ func (base *Controller) IndentifyHandler(c *gin.Context) interface{} {
 	}
 }
 
+// Refresh godoc
+// @Summary Refresh
+// @Description Refresh expired token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 "Success"
+// @Router /auth/refresh [get]
 func (base *Controller) Autheticator(c *gin.Context) (interface{}, error) {
 	var data model.AuthLoginDTO
 	if err := c.ShouldBindJSON(&data); err != nil {
