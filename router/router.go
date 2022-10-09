@@ -6,6 +6,7 @@ import (
 
 	"twojsomsiad/controller"
 	_ "twojsomsiad/docs"
+	"twojsomsiad/middleware"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,13 @@ func Setup(db *gorm.DB) *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	// TODO: Authorization
+	// Controller
+	api := controller.Controller{DB: db}
+
+	// Authorization
+	authorization := middleware.Auth(&api)
+	// Authorization middleware for later use
+	// authMiddleware := authorization.MiddlewareFunc()
 
 	// Swagger
 	sg := r.Group("/")
@@ -40,12 +47,12 @@ func Setup(db *gorm.DB) *gin.Engine {
 		})
 	}
 
-	api := controller.Controller{DB: db}
-
 	// Endpoints
 	auth := r.Group("/auth")
 	{
-		auth.GET("/ping", api.Ping)
+		auth.POST("/login", authorization.LoginHandler)
+		auth.GET("/refresh", authorization.RefreshHandler)
+		auth.POST("/register", api.Register)
 	}
 
 	return r
