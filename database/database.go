@@ -2,7 +2,9 @@ package database
 
 import (
 	"fmt"
+
 	"twojsomsiad/config"
+	"twojsomsiad/model"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -33,9 +35,9 @@ func Setup() error {
 		return err
 	}
 
-	// db.AutoMigrate(
-	// 	// models
-	// )
+	db.AutoMigrate(
+		model.User{},
+	)
 
 	DB = db
 
