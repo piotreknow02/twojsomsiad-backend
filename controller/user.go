@@ -64,7 +64,7 @@ func (base *Controller) GetMyUser(c *gin.Context) {
 // @Produce json
 // @Param Login body model.UserUpdateDTO true "UpdateUser"
 // @Success 200 "Success"
-// @Router /user [put]
+// @Router /user [post]
 func (base *Controller) UpdateUser(c *gin.Context) {
 	id, is := c.Get("id")
 	if !is {

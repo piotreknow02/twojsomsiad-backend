@@ -84,7 +84,7 @@ func GenerateRequestCollections() {
 	})
 	// refresh
 	auth.AddItem(&postman.Items{
-		Name: "register",
+		Name: "refresh",
 		Request: &postman.Request{
 			URL:         getUrl("/auth/refresh"),
 			Method:      postman.Get,

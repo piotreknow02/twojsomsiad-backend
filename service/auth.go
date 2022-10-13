@@ -17,7 +17,7 @@ func FindUserByCredentials(db *gorm.DB, credentials *model.AuthLoginDTO) (author
 }
 
 func CreateUser(db *gorm.DB, data *model.AuthRegisterDTO) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
+	hashedPassword, err := HashPassword(data.Password)
 	if err != nil {
 		return err
 	}
@@ -31,4 +31,12 @@ func CreateUser(db *gorm.DB, data *model.AuthRegisterDTO) error {
 		Points:   config.Conf.DefaultPoints,
 	}
 	return db.Create(&newUser).Error
+}
+
+func HashPassword(password string) (string, error) {
+	result, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(result), nil
 }

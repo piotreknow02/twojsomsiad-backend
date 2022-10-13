@@ -21,7 +21,10 @@ func UpdateUser(db *gorm.DB, id uint, data model.UserUpdateDTO) error {
 		newUser.Name = data.Name
 	}
 	if data.Password != "" {
-		newUser.Password = data.Password
+		newUser.Password, err = HashPassword(data.Password)
+		if err != nil {
+			return err
+		}
 	}
 	if data.Surname != "" {
 		newUser.Surname = data.Surname
