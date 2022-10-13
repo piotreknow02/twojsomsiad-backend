@@ -93,6 +93,56 @@ func GenerateRequestCollections() {
 		},
 	})
 
+	// --- user ---
+	user := c.AddItemGroup("user")
+	// get user
+	user.AddItem(&postman.Items{
+		Name: "get user",
+		Request: &postman.Request{
+			URL:         getUrl("/user/1"),
+			Method:      postman.Get,
+			Description: "Get user information by id",
+		},
+	})
+	// get my user
+	user.AddItem(&postman.Items{
+		Name: "get my user",
+		Request: &postman.Request{
+			URL:         getUrl("/user"),
+			Method:      postman.Get,
+			Description: "Get current user info from JWT",
+			Auth:        authentication,
+		},
+	})
+	// update user
+	updateUserData, err := json.Marshal(model.UserUpdateDTO{
+		Username: "johndoe",
+		Name:     "John",
+		Surname:  "Doe",
+		Password: "pass12345678",
+	})
+	if err != nil {
+		panic(err)
+	}
+	user.AddItem(&postman.Items{
+		Name: "update user",
+		Request: &postman.Request{
+			URL:         getUrl("/user/"),
+			Method:      postman.Post,
+			Description: "Update current user",
+			Auth:        authentication,
+			Body: &postman.Body{
+				Mode: "raw",
+				Raw:  string(updateUserData),
+				Options: &postman.BodyOptions{
+					Raw: postman.BodyOptionsRaw{
+						Language: postman.JSON,
+					},
+				},
+			},
+		},
+	})
+
 	// --- swagger ---
 	c.AddItem(&postman.Items{
 		Name: "swagger",
