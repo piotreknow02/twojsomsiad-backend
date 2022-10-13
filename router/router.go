@@ -36,7 +36,7 @@ func Setup(db *gorm.DB) *gin.Engine {
 	// Authorization
 	authorization := middleware.Auth(&api)
 	// Authorization middleware for later use
-	// authMiddleware := authorization.MiddlewareFunc()
+	authMiddleware := authorization.MiddlewareFunc()
 
 	// Swagger
 	sg := r.Group("/")
@@ -53,6 +53,17 @@ func Setup(db *gorm.DB) *gin.Engine {
 		auth.POST("/login", authorization.LoginHandler)
 		auth.GET("/refresh", authorization.RefreshHandler)
 		auth.POST("/register", api.Register)
+	}
+
+	user := r.Group("/user")
+	{
+		user.GET("/:id", api.GetUser)
+		protected := user.Group("/")
+		{
+			protected.Use(authMiddleware)
+			protected.GET("/", api.GetMyUser)
+			protected.POST("/", api.UpdateUser)
+		}
 	}
 
 	return r

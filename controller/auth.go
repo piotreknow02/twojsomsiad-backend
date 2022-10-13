@@ -22,9 +22,7 @@ import (
 // @Router /auth/login [post]
 func (base *Controller) IndentifyHandler(c *gin.Context) interface{} {
 	claims := jwt.ExtractClaims(c)
-	return &model.UserClaims{
-		ID: claims["id"].(uint),
-	}
+	return uint(claims["id"].(float64))
 }
 
 // Refresh godoc
@@ -49,7 +47,8 @@ func (base *Controller) Autheticator(c *gin.Context) (interface{}, error) {
 }
 
 func (base *Controller) Authorizator(data interface{}, c *gin.Context) bool {
-	if v, ok := data.(*model.User); ok && v != nil && *v != (model.User{}) {
+	v, ok := data.(uint)
+	if ok && v != 0 {
 		return true
 	}
 	return false
