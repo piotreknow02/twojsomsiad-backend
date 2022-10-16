@@ -2,13 +2,10 @@ package router
 
 import (
 	"net/http"
-	"time"
 
 	"twojsomsiad/controller"
-	_ "twojsomsiad/docs"
 	"twojsomsiad/middleware"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -21,14 +18,10 @@ func Setup(db *gorm.DB) *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	// TODO: Update config and move this to middleware
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
+
+	r.Use(middleware.GZIP())
+
+	r.Use(middleware.CORS())
 
 	// Controller
 	api := controller.Controller{DB: db}
@@ -46,6 +39,8 @@ func Setup(db *gorm.DB) *gin.Engine {
 			c.Redirect(http.StatusMovedPermanently, "/swagger-ui/index.html")
 		})
 	}
+
+	r.Use(middleware.CSP())
 
 	// Endpoints
 	auth := r.Group("/auth")
