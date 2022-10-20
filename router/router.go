@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"twojsomsiad/controller"
+	_ "twojsomsiad/docs"
 	"twojsomsiad/middleware"
 
 	"github.com/gin-gonic/gin"
