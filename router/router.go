@@ -18,7 +18,6 @@ func Setup(db *gorm.DB) *gin.Engine {
 
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	// TODO: Update config and move this to middleware
 
 	r.Use(middleware.GZIP())
 
@@ -41,7 +40,8 @@ func Setup(db *gorm.DB) *gin.Engine {
 		})
 	}
 
-	r.Use(middleware.CSP())
+	// Remove CSP for testing
+	// r.Use(middleware.CSP())
 
 	// Endpoints
 	auth := r.Group("/auth")
