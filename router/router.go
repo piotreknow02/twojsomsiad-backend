@@ -26,10 +26,6 @@ func Setup(db *gorm.DB) *gin.Engine {
 
 	// Controller
 	api := controller.Controller{DB: db}
-	advert := r.Group("/adverts")
-	{
-		advert.GET("/", api.Adverts)
-	}
 
 	// Authorization
 	authorization := middleware.Auth(&api)
