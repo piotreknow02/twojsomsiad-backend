@@ -9,6 +9,7 @@ import (
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 // Login godoc
@@ -73,6 +74,10 @@ func (base *Controller) Unathorized(c *gin.Context, code int, message string) {
 func (base *Controller) Register(c *gin.Context) {
 	var data model.AuthRegisterDTO
 	if err := c.ShouldBindJSON(&data); err != nil {
+		utils.SendError(c, http.StatusBadRequest)
+		return
+	}
+	if err := validator.New().Struct(data); err != nil {
 		utils.SendError(c, http.StatusBadRequest)
 		return
 	}
