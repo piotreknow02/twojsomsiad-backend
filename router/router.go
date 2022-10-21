@@ -26,6 +26,14 @@ func Setup(db *gorm.DB) *gin.Engine {
 	// Controller
 	api := controller.Controller{DB: db}
 
+	advert := r.Group("/advert")
+	{
+		advert.GET("/", api.Adverts)
+		advert.GET("/:id", api.Advert)
+		advert.POST("/", api.CreateAdvert)
+		advert.DELETE("/:id", api.RemoveAdvert)
+	}
+
 	// Authorization
 	authorization := middleware.Auth(&api)
 	// Authorization middleware for later use
