@@ -72,9 +72,9 @@ func Setup(db *gorm.DB) *gin.Engine {
 			protected.Use(authMiddleware)
 			protected.POST("/", api.CreateAdvert)
 			protected.DELETE("/:id", api.RemoveAdvert)
-			// protected.GET("/advert/:id/apply", api.Apply)
-			// protected.GET("/advert/:id/application", api.GetApplications)
-			// protected.GET("/advert/:id/application/:apid", api.VerifyApplication)
+			protected.GET("/:id/apply", api.Apply)
+			protected.GET("/:id/application", api.GetApplications)
+			protected.GET("/:id/application/:apid", api.VerifyApplication)
 		}
 	}
 
