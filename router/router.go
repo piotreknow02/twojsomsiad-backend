@@ -26,14 +26,6 @@ func Setup(db *gorm.DB) *gin.Engine {
 	// Controller
 	api := controller.Controller{DB: db}
 
-	advert := r.Group("/advert")
-	{
-		advert.GET("/", api.Adverts)
-		advert.GET("/:id", api.Advert)
-		advert.POST("/", api.CreateAdvert)
-		advert.DELETE("/:id", api.RemoveAdvert)
-	}
-
 	// Authorization
 	authorization := middleware.Auth(&api)
 	// Authorization middleware for later use
@@ -67,6 +59,22 @@ func Setup(db *gorm.DB) *gin.Engine {
 			protected.Use(authMiddleware)
 			protected.GET("/", api.GetMyUser)
 			protected.POST("/", api.UpdateUser)
+			protected.GET("/adverts", api.GetUserAdverts)
+		}
+	}
+
+	advert := r.Group("/advert")
+	{
+		advert.GET("/", api.Adverts)
+		advert.GET("/:id", api.Advert)
+		protected := advert.Group("/")
+		{
+			protected.Use(authMiddleware)
+			protected.POST("/", api.CreateAdvert)
+			protected.DELETE("/:id", api.RemoveAdvert)
+			// protected.GET("/advert/:id/apply", api.Apply)
+			// protected.GET("/advert/:id/application", api.GetApplications)
+			// protected.GET("/advert/:id/application/:apid", api.VerifyApplication)
 		}
 	}
 

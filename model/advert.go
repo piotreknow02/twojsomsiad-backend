@@ -12,8 +12,15 @@ type Advert struct {
 	Description string    `json:"description" validate:"required"`
 	City        string    `json:"city" validate:"required"`
 	Date        time.Time `json:"date" validate:"required"`
-	UserID      uint      `json:"user_id" validate:"required"`
-	Users       []*User   `gorm:"many2many:users_adverts"`
+	UserID      uint      `json:"user_id"`
+	User        User      `json:"user"`
+}
+
+type Application struct {
+	gorm.Model
+	UserID   uint `json:"user_id"`
+	AdvertID uint `json:"advert_id"`
+	Verified bool `json:"verified"`
 }
 
 type CreateAdvertDTO struct {
@@ -21,7 +28,6 @@ type CreateAdvertDTO struct {
 	Description string    `json:"description" validate:"required"`
 	City        string    `json:"city" validate:"required"`
 	Date        time.Time `json:"date" validate:"required"`
-	UserID      uint      `json:"user_id" validate:"required"`
 }
 
 type UpdateAdvertDTO struct {
@@ -29,5 +35,4 @@ type UpdateAdvertDTO struct {
 	Description string    `json:"description" validate:"required"`
 	City        string    `json:"city" validate:"required"`
 	Date        time.Time `json:"date" validate:"required"`
-	UserID      uint      `json:"user_id" validate:"required"`
 }

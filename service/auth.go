@@ -16,13 +16,13 @@ func FindUserByCredentials(db *gorm.DB, credentials *model.AuthLoginDTO) (author
 	return false, model.User{}
 }
 
-func CreateUser(db *gorm.DB, data *model.AuthRegisterDTO) error {
+func CreateUser(db *gorm.DB, data *model.AuthRegisterDTO) (newUser model.User, err error) {
 	hashedPassword, err := HashPassword(data.Password)
 	if err != nil {
-		return err
+		return model.User{}, err
 	}
 
-	newUser := model.User{
+	newUser = model.User{
 		Username: data.Username,
 		Name:     data.Name,
 		Surname:  data.Surname,
@@ -30,7 +30,8 @@ func CreateUser(db *gorm.DB, data *model.AuthRegisterDTO) error {
 		Password: string(hashedPassword),
 		Points:   config.Conf.DefaultPoints,
 	}
-	return db.Create(&newUser).Error
+	err = db.Create(&newUser).Error
+	return newUser, err
 }
 
 func HashPassword(password string) (string, error) {

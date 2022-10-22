@@ -81,10 +81,10 @@ func (base *Controller) Register(c *gin.Context) {
 		utils.SendError(c, http.StatusBadRequest)
 		return
 	}
-	err := service.CreateUser(base.DB, &data)
+	user, err := service.CreateUser(base.DB, &data)
 	if err != nil {
 		utils.SendError(c, http.StatusInternalServerError)
 		return
 	}
-	c.JSON(http.StatusOK, "")
+	c.JSON(http.StatusOK, user)
 }

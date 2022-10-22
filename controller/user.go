@@ -35,9 +35,9 @@ func (base *Controller) GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, user.ToView())
 }
 
-// Register godoc
-// @Summary Register
-// @Description Register Process
+// GetMyUser godoc
+// @Summary Get my user
+// @Description Get currently logged in user
 // @Tags user
 // @Accept json
 // @Produce json
@@ -81,10 +81,32 @@ func (base *Controller) UpdateUser(c *gin.Context) {
 		utils.SendError(c, http.StatusBadRequest)
 		return
 	}
-	err := service.UpdateUser(base.DB, id.(uint), data)
+	user, err := service.UpdateUser(base.DB, id.(uint), data)
 	if err != nil {
 		utils.SendError(c, http.StatusConflict)
 		return
 	}
-	c.JSON(http.StatusOK, "")
+	c.JSON(http.StatusOK, user)
+}
+
+// Get godoc
+// @Summary Get my user
+// @Description Get currently logged in user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Success 200 "Success"
+// @Router /user/adverts [get]
+func (base *Controller) GetUserAdverts(c *gin.Context) {
+	id, is := c.Get("id")
+	if !is {
+		utils.SendError(c, http.StatusBadRequest)
+		return
+	}
+	adverts, err := service.FindAdvertsForUser(base.DB, id.(uint))
+	if err != nil {
+		utils.SendError(c, http.StatusInternalServerError)
+		return
+	}
+	c.JSON(http.StatusOK, adverts)
 }

@@ -11,11 +11,10 @@ func FindUserById(db *gorm.DB, id uint) (user model.User, err error) {
 	return user, err
 }
 
-func UpdateUser(db *gorm.DB, id uint, data model.UserUpdateDTO) error {
-	var newUser model.User
-	err := db.Find(&newUser, id).Error
+func UpdateUser(db *gorm.DB, id uint, data model.UserUpdateDTO) (newUser model.User, err error) {
+	err = db.Find(&newUser, id).Error
 	if err != nil {
-		return err
+		return model.User{}, err
 	}
 	if data.Name != "" {
 		newUser.Name = data.Name
@@ -23,7 +22,7 @@ func UpdateUser(db *gorm.DB, id uint, data model.UserUpdateDTO) error {
 	if data.Password != "" {
 		newUser.Password, err = HashPassword(data.Password)
 		if err != nil {
-			return err
+			return model.User{}, err
 		}
 	}
 	if data.Surname != "" {
@@ -32,5 +31,6 @@ func UpdateUser(db *gorm.DB, id uint, data model.UserUpdateDTO) error {
 	if data.Username != "" {
 		newUser.Username = data.Username
 	}
-	return db.Save(&newUser).Error
+	err = db.Save(&newUser).Error
+	return newUser, err
 }
