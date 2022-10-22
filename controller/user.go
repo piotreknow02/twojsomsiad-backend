@@ -89,9 +89,9 @@ func (base *Controller) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// Get godoc
-// @Summary Get my user
-// @Description Get currently logged in user
+// GetAdverts godoc
+// @Summary Get user adverts
+// @Description Get adverts created by currently logged in user
 // @Tags user
 // @Accept json
 // @Produce json

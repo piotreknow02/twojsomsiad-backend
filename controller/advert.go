@@ -165,13 +165,14 @@ func (base *Controller) GetApplications(c *gin.Context) {
 	c.JSON(http.StatusOK, adverts)
 }
 
-// Apply godoc
-// @Summary Apply
-// @Description Apply for advert
+// VerifyApplication godoc
+// @Summary Verify Application
+// @Description Verify if user that applied to advert actually helped
 // @Tags advert
 // @Accept json
 // @Produce json
 // @Param id path int true "advert ID"
+// @Param apid path int true "application ID"
 // @Success 200 "Success"
 // @Router /advert/{udvid}/application/{apid} [get]
 func (base *Controller) VerifyApplication(c *gin.Context) {
