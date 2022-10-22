@@ -4,12 +4,13 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Username string `json:"username" validate:"required" gorm:"unique"`
-	Name     string `json:"name" validate:"required"`
-	Surname  string `json:"surname" validate:"required"`
-	Email    string `json:"email" validate:"email"`
-	Password string `json:"password" validate:"bcrypt"`
-	Points   uint   `json:"points"`
+	Username string   `json:"username" validate:"required" gorm:"unique"`
+	Name     string   `json:"name" validate:"required"`
+	Surname  string   `json:"surname" validate:"required"`
+	Email    string   `json:"email" validate:"email"`
+	Password string   `json:"password" validate:"bcrypt"`
+	Points   uint     `json:"points"`
+	Adverts  []Advert `json:"adverts" gorm:"foreignKey:user_id"`
 }
 
 type UserUpdateDTO struct {
@@ -21,11 +22,12 @@ type UserUpdateDTO struct {
 
 type UserView struct {
 	gorm.Model
-	Username string `json:"username" validate:"required" gorm:"unique"`
-	Name     string `json:"name" validate:"required"`
-	Surname  string `json:"surname" validate:"required"`
-	Email    string `json:"email" validate:"email"`
-	Points   uint   `json:"points"`
+	Username string   `json:"username" validate:"required" gorm:"unique"`
+	Name     string   `json:"name" validate:"required"`
+	Surname  string   `json:"surname" validate:"required"`
+	Email    string   `json:"email" validate:"email"`
+	Points   uint     `json:"points"`
+	Adverts  []Advert `json:"adverts"`
 }
 
 func (user *User) ToView() UserView {

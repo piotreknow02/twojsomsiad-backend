@@ -36,8 +36,9 @@ func Setup() error {
 	}
 
 	db.AutoMigrate(
-		model.User{},
-		model.Advert{},
+		&model.User{},
+		&model.Advert{},
+		&model.Application{},
 	)
 
 	DB = db
