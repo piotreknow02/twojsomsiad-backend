@@ -7,7 +7,7 @@ import (
 
 func CSP() gin.HandlerFunc {
 	return secure.New(secure.Config{
-		AllowedHosts:          []string{"twojsomsiad.ml"},
+		AllowedHosts:          []string{}, // []string{"twojsomsiad.ml"},
 		STSSeconds:            315360000,
 		STSIncludeSubdomains:  true,
 		FrameDeny:             true,

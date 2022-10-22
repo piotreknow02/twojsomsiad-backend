@@ -41,7 +41,7 @@ func Setup(db *gorm.DB) *gin.Engine {
 	}
 
 	// Remove CSP for testing
-	// r.Use(middleware.CSP())
+	r.Use(middleware.CSP())
 
 	// Endpoints
 	auth := r.Group("/auth")
