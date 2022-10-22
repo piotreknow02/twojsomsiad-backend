@@ -45,7 +45,7 @@ func ApplyForEvent(db *gorm.DB, userId uint, advertId uint) (application model.A
 		AdvertID: advertId,
 		Verified: false,
 	}
-	err = db.Create(application).Error
+	err = db.Create(&application).Error
 	return application, err
 }
 
