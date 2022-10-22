@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"twojsomsiad/config"
 	"twojsomsiad/model"
@@ -134,6 +135,64 @@ func GenerateRequestCollections() {
 			Body: &postman.Body{
 				Mode: "raw",
 				Raw:  string(updateUserData),
+				Options: &postman.BodyOptions{
+					Raw: postman.BodyOptionsRaw{
+						Language: postman.JSON,
+					},
+				},
+			},
+		},
+	})
+	// get adverts
+	user.AddItem(&postman.Items{
+		Name: "get adverts",
+		Request: &postman.Request{
+			URL:         getUrl("/user/adverts"),
+			Method:      postman.Get,
+			Description: "Get adverts for user",
+			Auth:        authentication,
+		},
+	})
+
+	// --- advert ---
+	advert := c.AddItemGroup("advert")
+	// get adverts
+	advert.AddItem(&postman.Items{
+		Name: "get adverts",
+		Request: &postman.Request{
+			URL:         getUrl("/advert/"),
+			Method:      postman.Get,
+			Description: "Get adverts",
+		},
+	})
+	// remove advert
+	advert.AddItem(&postman.Items{
+		Name: "remove advert",
+		Request: &postman.Request{
+			URL:         getUrl("/advert/1"),
+			Method:      postman.Delete,
+			Description: "Remove advert by id",
+		},
+	})
+	// create advert
+	advertCreateData, err := json.Marshal(model.CreateAdvertDTO{
+		Title:       "Test",
+		Description: "test description",
+		City:        "Kraków",
+		Date:        time.Now(),
+	})
+	if err != nil {
+		panic(err)
+	}
+	advert.AddItem(&postman.Items{
+		Name: "create advert",
+		Request: &postman.Request{
+			URL:         getUrl("advert/"),
+			Method:      postman.Post,
+			Description: "Create advert",
+			Body: &postman.Body{
+				Mode: "raw",
+				Raw:  string(advertCreateData),
 				Options: &postman.BodyOptions{
 					Raw: postman.BodyOptionsRaw{
 						Language: postman.JSON,
