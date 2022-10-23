@@ -202,6 +202,43 @@ func GenerateRequestCollections() {
 		},
 	})
 
+	//apply to advert
+	advert.AddItem(&postman.Items{
+		Name: "apply to advert",
+		Request: &postman.Request{
+			URL:         getUrl("advert/1/apply"),
+			Method:      postman.Get,
+			Description: "Apply to advert",
+			Auth:        authentication,
+		},
+	})
+
+	// application
+	advert.AddItem(
+		&postman.Items{
+			Name: "application",
+			Request: &postman.Request{
+				URL:         getUrl("advert/1/application"),
+				Method:      postman.Get,
+				Description: "Get application for advert",
+				Auth:        authentication,
+			},
+		},
+	)
+
+	// verify application
+	advert.AddItem(
+		&postman.Items{
+			Name: "verify application",
+			Request: &postman.Request{
+				URL:         getUrl("advert/1/application/1/verify"),
+				Method:      postman.Get,
+				Description: "Verify application for advert",
+				Auth:        authentication,
+			},
+		},
+	)
+
 	// --- swagger ---
 	c.AddItem(&postman.Items{
 		Name: "swagger",
