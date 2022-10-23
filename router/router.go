@@ -41,7 +41,7 @@ func Setup(db *gorm.DB) *gin.Engine {
 	}
 
 	// Remove CSP for testing
-	r.Use(middleware.CSP())
+	// r.Use(middleware.CSP())
 
 	// Endpoints
 	auth := r.Group("/auth")
@@ -65,7 +65,7 @@ func Setup(db *gorm.DB) *gin.Engine {
 
 	advert := r.Group("/advert")
 	{
-		advert.GET("/", api.Adverts)
+		advert.GET("", api.Adverts)
 		advert.GET("/:id", api.Advert)
 		protected := advert.Group("/")
 		{
