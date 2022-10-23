@@ -209,6 +209,7 @@ func GenerateRequestCollections() {
 			URL:         getUrl("advert/1/apply"),
 			Method:      postman.Get,
 			Description: "Apply to advert",
+			Auth:        authentication,
 		},
 	})
 
@@ -220,6 +221,7 @@ func GenerateRequestCollections() {
 				URL:         getUrl("advert/1/application"),
 				Method:      postman.Get,
 				Description: "Get application for advert",
+				Auth:        authentication,
 			},
 		},
 	)
@@ -232,6 +234,7 @@ func GenerateRequestCollections() {
 				URL:         getUrl("advert/1/application/1/verify"),
 				Method:      postman.Get,
 				Description: "Verify application for advert",
+				Auth:        authentication,
 			},
 		},
 	)
