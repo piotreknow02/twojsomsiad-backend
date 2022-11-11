@@ -12,8 +12,8 @@ type Advert struct {
 	Description string    `json:"description" validate:"required"`
 	City        string    `json:"city" validate:"required"`
 	Date        time.Time `json:"date" validate:"required"`
-	UserID      uint      `json:"user_id"`
 	User        User      `json:"user"`
+	UserID      uint      `json:"user_id"`
 }
 
 type Application struct {

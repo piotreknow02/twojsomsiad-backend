@@ -11,14 +11,14 @@ func FindAdverts(db *gorm.DB, args *model.Args) (adverts []model.Advert, err err
 	query := db.Select("adverts.*")
 	query = query.Offset(args.Offset)
 	query = query.Limit(args.Limit)
-	if err := query.Find(&adverts).Error; err != nil {
+	if err := query.Preload("User").Find(&adverts).Error; err != nil {
 		return []model.Advert{}, err
 	}
 	return adverts, nil
 }
 
 func FindAdvertById(db *gorm.DB, id string) (advert model.Advert, err error) {
-	err = db.First(&advert, id).Error
+	err = db.Preload("User").First(&advert, id).Error
 	return advert, err
 }
 
@@ -35,7 +35,7 @@ func CreateAdvert(db *gorm.DB, id uint, data *model.CreateAdvertDTO) (advert mod
 }
 
 func FindAdvertsForUser(db *gorm.DB, id uint) (adverts []model.Advert, err error) {
-	err = db.Where("user_id = ?", id).Find(&adverts).Error
+	err = db.Preload("User").Where("user_id = ?", id).Find(&adverts).Error
 	return adverts, err
 }
 
