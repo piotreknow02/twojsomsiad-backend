@@ -10,7 +10,7 @@ type User struct {
 	Email    string   `json:"email" validate:"email"`
 	Password string   `json:"password" validate:"bcrypt"`
 	Points   uint     `json:"points"`
-	Adverts  []Advert `json:"adverts" gorm:"foreignKey:user_id"`
+	Adverts  []Advert `json:"adverts"`
 }
 
 type UserUpdateDTO struct {
