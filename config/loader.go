@@ -17,6 +17,7 @@ func Setup() error {
 
 func (c *Config) GetFromEnv() error {
 	var err error
+	c.IsDev = os.Getenv("DEV") == "true"
 	c.Host = os.Getenv("HOST")
 	if c.Host == "" {
 		return envErr("HOST")

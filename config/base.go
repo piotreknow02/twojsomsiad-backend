@@ -1,6 +1,7 @@
 package config
 
 type Config struct {
+	IsDev                bool
 	Host                 string
 	Port                 string
 	DBUser               string

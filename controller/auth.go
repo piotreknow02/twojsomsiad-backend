@@ -74,16 +74,16 @@ func (base *Controller) Unathorized(c *gin.Context, code int, message string) {
 func (base *Controller) Register(c *gin.Context) {
 	var data model.AuthRegisterDTO
 	if err := c.ShouldBindJSON(&data); err != nil {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err)
 		return
 	}
 	if err := validator.New().Struct(data); err != nil {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err)
 		return
 	}
 	user, err := service.CreateUser(base.DB, &data)
 	if err != nil {
-		utils.SendError(c, http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusOK, user)

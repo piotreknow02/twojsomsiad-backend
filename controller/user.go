@@ -24,12 +24,12 @@ func (base *Controller) GetUser(c *gin.Context) {
 	sid := c.Param("id")
 	id, err := strconv.Atoi(sid)
 	if err != nil {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err)
 		return
 	}
 	user, err := service.FindUserById(base.DB, uint(id))
 	if err != nil {
-		utils.SendError(c, http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusOK, user.ToView())
@@ -46,12 +46,12 @@ func (base *Controller) GetUser(c *gin.Context) {
 func (base *Controller) GetMyUser(c *gin.Context) {
 	id, is := c.Get("id")
 	if !is {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, invalidIdErr)
 		return
 	}
 	user, err := service.FindUserById(base.DB, id.(uint))
 	if err != nil {
-		utils.SendError(c, http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusOK, user.ToView())
@@ -69,21 +69,21 @@ func (base *Controller) GetMyUser(c *gin.Context) {
 func (base *Controller) UpdateUser(c *gin.Context) {
 	id, is := c.Get("id")
 	if !is {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, invalidIdErr)
 		return
 	}
 	var data model.UserUpdateDTO
 	if err := c.ShouldBindJSON(&data); err != nil {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err)
 		return
 	}
 	if err := validator.New().Struct(data); err != nil {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, err)
 		return
 	}
 	user, err := service.UpdateUser(base.DB, id.(uint), data)
 	if err != nil {
-		utils.SendError(c, http.StatusConflict)
+		utils.SendError(c, http.StatusConflict, err)
 		return
 	}
 	c.JSON(http.StatusOK, user)
@@ -100,12 +100,12 @@ func (base *Controller) UpdateUser(c *gin.Context) {
 func (base *Controller) GetUserAdverts(c *gin.Context) {
 	id, is := c.Get("id")
 	if !is {
-		utils.SendError(c, http.StatusBadRequest)
+		utils.SendError(c, http.StatusBadRequest, invalidIdErr)
 		return
 	}
 	adverts, err := service.FindAdvertsForUser(base.DB, id.(uint))
 	if err != nil {
-		utils.SendError(c, http.StatusInternalServerError)
+		utils.SendError(c, http.StatusInternalServerError, err)
 		return
 	}
 	c.JSON(http.StatusOK, adverts)
