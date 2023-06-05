@@ -39,13 +39,32 @@ func FindAdvertsForUser(db *gorm.DB, id uint) (adverts []model.Advert, err error
 	return adverts, err
 }
 
+func CheckUserApplicationDuplicate(db *gorm.DB, userId uint, advertId uint) (exists bool, err error) {
+	var adverts []model.Application
+	queryErr := db.Where("advert_id = ?", advertId).Where("user_id = ?", userId).Find(&adverts).Error
+	if queryErr == gorm.ErrRecordNotFound || len(adverts) < 1 {
+		return false, nil
+	}
+	return true, queryErr
+}
+
 func ApplyForEvent(db *gorm.DB, userId uint, advertId uint) (application model.Application, err error) {
+	exists, err := CheckUserApplicationDuplicate(db, userId, advertId)
+
+	if err != nil {
+		return model.Application{}, err
+	}
+	if exists {
+		return model.Application{}, errors.New("duplicate advert application")
+	}
+
 	application = model.Application{
 		UserID:   userId,
 		AdvertID: advertId,
 		Verified: false,
 	}
 	err = db.Create(&application).Error
+
 	return application, err
 }
 
