@@ -9,7 +9,7 @@ RUN go mod download
 COPY . .
 
 # swagger
-RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN go install github.com/swaggo/swag/cmd/swag@1.16
 RUN $(go env GOPATH)/bin/swag init
 
 RUN CGO_ENABLED=0 go build -o /build/app main.go
